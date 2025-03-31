@@ -127,7 +127,7 @@ public class SolanaSocket {
 
 extension SolanaSocket: WebSocketDelegate {
 
-    public func didReceive(event: WebSocketEvent, client: WebSocket) {
+    public func didReceive(event: WebSocketEvent, client: WebSocketClient) {
         log(event: event)
         switch event {
         case .connected:
@@ -142,10 +142,12 @@ extension SolanaSocket: WebSocketDelegate {
         case .viabilityChanged: break
         case .reconnectSuggested: break
         case .cancelled: break
-        case .error(let error): break
+        case .error(let error):
             self.delegate?.error(error: error)
-        }
-    }
+        // Add this case
+        case .peerClosed:
+            break
+        }    }
 
     private func log(event: WebSocketEvent) {
         switch event {
